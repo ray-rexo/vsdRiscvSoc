@@ -207,7 +207,7 @@ RISC-V Uniqueness Check
 User: rayrexo
 Host: sarath-VirtualBox
 
-
+```
 📸 Implementation Output
 
 <img width="736" height="182" alt="image" src="https://github.com/user-attachments/assets/fa6e03df-f00e-4c86-82ad-11acfb760879" />
@@ -220,4 +220,4 @@ Host: sarath-VirtualBox
 
 UniqueID: 0x740616a6b0af98a9
 GCC_VLEN: 5
-```
+
