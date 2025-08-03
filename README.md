@@ -206,6 +206,18 @@ bbl loader
 RISC-V Uniqueness Check
 User: rayrexo
 Host: sarath-VirtualBox
+
+
+📸 Implementation Output
+
+<img width="736" height="182" alt="image" src="https://github.com/user-attachments/assets/fa6e03df-f00e-4c86-82ad-11acfb760879" />
+
+<img width="811" height="461" alt="image" src="https://github.com/user-attachments/assets/a17bbddd-2fb2-4168-ac84-dadca335b5f9" />
+
+<img width="811" height="64" alt="image" src="https://github.com/user-attachments/assets/96a25909-5a6e-42e2-9da6-41960c36c4e5" />
+
+<img width="736" height="271" alt="image" src="https://github.com/user-attachments/assets/1b8edd93-a414-4c6f-a934-6700cfb1c260" />
+
 UniqueID: 0x740616a6b0af98a9
 GCC_VLEN: 5
 ```
