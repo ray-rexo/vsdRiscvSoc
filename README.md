@@ -1,44 +1,69 @@
 # vsdRiscvSoc
-🏗️🔧⚙️ RISC-V Toolchain Setup & Uniqueness Test ⚙️🔧🏗️
-🎯 Objective
+# 🏗️🔧⚙️ RISC-V Toolchain Setup & Uniqueness Test ⚙️🔧🏗️
+
+## 🎯 Objective
 
 Install the RISC-V toolchain on Ubuntu (or WSL), configure environment variables, and verify that essential binaries (GCC, objdump, GDB, etc.) function correctly for cross-compilation using the Spike simulator and Proxy Kernel.
-🛠️ Step 1 — Install Base Developer Tools
+
+---
+
+## 🛠️ Step 1 — Install Base Developer Tools
 
 Install common prerequisites needed to build the RISC-V toolchain and Spike.
 
+```bash
 sudo apt-get update
 sudo apt-get install -y git vim autoconf automake autotools-dev curl \
   libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex \
   texinfo gperf libtool patchutils bc zlib1g-dev libexpat1-dev gtkwave
+```
 
-🗂️ Step 2 — Create Workspace Directory
+---
 
-Keep everything inside a workspace folder ~/riscv_toolchain for easy navigation and maintenance.
+## 🗂️ Step 2 — Create Workspace Directory
 
+Keep everything inside a workspace folder `~/riscv_toolchain` for easy navigation and maintenance.
+
+```bash
 cd
 pwd=$PWD
 mkdir -p riscv_toolchain
 cd riscv_toolchain
+```
 
-📥 Step 3 — Get Prebuilt RISC-V GCC Toolchain
+---
+
+## 📅 Step 3 — Get Prebuilt RISC-V GCC Toolchain
 
 Download and extract the prebuilt toolchain from SiFive:
 
+```bash
 wget "https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz"
 tar -xvzf riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+```
 
-🔗 Step 4 — Add Toolchain to PATH
+---
 
+## 🔗 Step 4 — Add Toolchain to PATH
+
+```bash
 echo 'export PATH=$HOME/riscv_toolchain/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
+```
 
-🧬 Step 5 — Install Device Tree Compiler (DTC)
+---
 
+## 🧬 Step 5 — Install Device Tree Compiler (DTC)
+
+```bash
 sudo apt-get install -y device-tree-compiler
+```
 
-🖥️ Step 6 — Build and Install Spike (ISA Simulator)
+---
 
+## 💻 Step 6 — Build and Install Spike (ISA Simulator)
+
+```bash
 cd $pwd/riscv_toolchain
 git clone https://github.com/riscv/riscv-isa-sim.git
 cd riscv-isa-sim
@@ -46,25 +71,37 @@ mkdir -p build && cd build
 ../configure --prefix=$pwd/riscv_toolchain/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
 make -j$(nproc)
 sudo make install
+```
 
-🧩 Step 7 — Build and Install RISC‑V Proxy Kernel (PK)
+---
 
+## 🧹 Step 7 — Build and Install RISC-V Proxy Kernel (PK)
+
+```bash
 cd $pwd/riscv_toolchain
 git clone https://github.com/riscv/riscv-pk.git
 cd riscv-pk
-git checkout v1.0.0  # Ensures compatibility with older toolchains
+git checkout v1.0.0
 mkdir -p build && cd build
 ../configure --prefix=$pwd/riscv_toolchain/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14 --host=riscv64-unknown-elf
 make -j$(nproc)
 sudo make install
+```
 
-🛤️ Step 8 — Ensure Proxy Kernel is in PATH
+---
 
+## 🛃️ Step 8 — Ensure Proxy Kernel is in PATH
+
+```bash
 echo 'export PATH=$HOME/riscv_toolchain/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/riscv64-unknown-elf/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
+```
 
-🔬 Step 9 — (Optional) Install Icarus Verilog
+---
 
+## 🔬 Step 9 — (Optional) Install Icarus Verilog
+
+```bash
 cd $pwd/riscv_toolchain
 git clone https://github.com/steveicarus/iverilog.git
 cd iverilog
@@ -75,9 +112,13 @@ chmod +x autoconf.sh
 ./configure
 make -j$(nproc)
 sudo make install
+```
 
-✅ Step 10 — Sanity Checks
+---
 
+## ✅ Step 10 — Sanity Checks
+
+```bash
 which riscv64-unknown-elf-gcc
 riscv64-unknown-elf-gcc -v
 
@@ -85,10 +126,15 @@ which spike
 spike --version || spike -h
 
 which pk
+```
 
-🧪 Final Deliverable — Unique C Test
-📄 unique_test.c
+---
 
+## 🧲 Final Step — Uniqueness C Test
+
+### 📄 `unique_test.c`
+
+```c
 #include <stdint.h>
 #include <stdio.h>
 
@@ -131,22 +177,35 @@ int main(void) {
 #endif
     return 0;
 }
+```
 
-⚙️ Compile Command
+---
 
+## ⚙️ Compile Command
+
+```bash
 riscv64-unknown-elf-gcc -O2 -Wall -march=rv64imac -mabi=lp64 \
   -DUSERNAME="\"$(id -un)\"" -DHOSTNAME="\"$(hostname -s)\"" \
   unique_test.c -o unique_test
+```
 
-▶️ Run on Spike
+---
 
+## ▶️ Run on Spike
+
+```bash
 spike $HOME/riscv_toolchain/riscv-pk/build/pk ./unique_test
+```
 
-🖥️ Sample Output
+---
 
+## 💻 Sample Output
+
+```text
 bbl loader
 RISC-V Uniqueness Check
 User: rayrexo
 Host: sarath-VirtualBox
 UniqueID: 0x740616a6b0af98a9
 GCC_VLEN: 5
+```
